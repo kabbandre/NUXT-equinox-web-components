@@ -168,7 +168,7 @@
         </div>
       </div>
     </div>
-    <div class="silicon-dark-strong" style="position: absolute; bottom: 0; left: 0; border-radius: 20px; margin: 8px; padding: 8px 12px; color: white;">
+    <div class="silicon-dark-strong" style="position: fixed; bottom: 0; left: 0; border-radius: 20px; margin: 8px; padding: 8px 12px; color: white;">
       Images are provided by <a style="color: white;" href="https://picsum.photos/">Lorem Picsum</a>.
     </div>
   </div>
@@ -227,12 +227,11 @@ export default {
 body {
   font-family: Roboto;
   margin: 0;
-  width: 100vw;
-  overflow: hidden;
   background: url("https://picsum.photos/1920/1080");
+  overflow-x: hidden;
 }
 .row {
-  height: 100vh;
+  min-height: 100vh;
   padding: 0
 }
 .col {

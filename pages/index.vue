@@ -5,10 +5,17 @@
         <e-tabs :tabs="JSON.stringify(tabs)" @tabSelected="tabSelected" />
         <div class="sidebar">
           <div v-if="selectedTab.key === 'friends'">
-            <e-card v-for="(friend, i) in friends" :key="i" style="width: 100%; margin-bottom: 10px;">
+            <e-card
+              v-for="(friend, i) in friends"
+              :key="i"
+              :dark="isDark"
+              :backdrop-blur="strength"
+              :backdrop="silicon"
+              style="width: 100%; margin-bottom: 10px;"
+            >
               <div style="display: flex; padding: 8px; width: 100%; gap: 12px; align-items: center">
                 <e-avatar>
-                  <img :src="friend.img" />
+                  <img :src="friend.img">
                 </e-avatar>
                 <div>
                   <div style="color: white; font-weight: bold; font-size: 16px">
@@ -22,10 +29,17 @@
             </e-card>
           </div>
           <div v-else-if="selectedTab.key === 'blocked'">
-            <e-card v-for="(block, i) in blocked" :key="i" style="width: 100%; margin-bottom: 10px;">
+            <e-card
+              v-for="(block, i) in blocked"
+              :key="i"
+              :dark="isDark"
+              :backdrop-blur="strength"
+              :backdrop="silicon"
+              style="width: 100%; margin-bottom: 10px;"
+            >
               <div style="display: flex; flex-wrap: nowrap; padding: 8px; width: 100%; gap: 12px; align-items: center">
                 <e-avatar>
-                  <img :src="block.img" />
+                  <img :src="block.img">
                 </e-avatar>
                 <div>
                   <div style="color: white; font-weight: bold; font-size: 16px">
@@ -42,7 +56,7 @@
             </e-card>
           </div>
           <div v-else-if="selectedTab.key === 'settings'">
-            <e-card style="margin: auto">
+            <e-card :dark="isDark" :backdrop-blur="strength" :backdrop="silicon" style="margin: auto">
               <div
                 style="
               padding: 16px;
@@ -81,19 +95,38 @@
               </div>
             </e-card>
             <div style="background: white; border-radius: 30px; padding: 24px; margin-top: 20px">
-              <e-checkbox>
+              <div style="font-size: 24px; display: flex; align-items: center; gap: 12px; margin-bottom: 12px">
+                <e-icon :color="isDark ? 'var(--primary)' : 'var(--gray-300)'" icon="ph-moon" />
+                <e-checkbox
+                  type="switch"
+                  :value="mode"
+                  false-value="dark"
+                  true-value="light"
+                  @valueChanged="e => mode = e.detail"
+                />
+                <e-icon :color="!isDark ? 'var(--primary)' : 'var(--gray-300)'" icon="ph-sun" />
+              </div>
+              <e-checkbox style="margin-bottom: 12px;" :value="silicon" @valueChanged="e => silicon = e.detail">
                 Turn on Silicon style
               </e-checkbox>
-              <e-radio style="margin-top: 12px">
-                Dark mode
-              </e-radio>
-              <e-radio style="margin-top: 12px">
-                Light mode
-              </e-radio>
+              <label style="font-size: 12px;">
+                Silicon style strength
+                <e-radio-group :value="strength" @valueChanged="e => strength = e.detail">
+                  <e-radio value="weak" style="margin-top: 6px">
+                    Weak
+                  </e-radio>
+                  <e-radio value="medium" style="margin-top: 12px">
+                    Medium
+                  </e-radio>
+                  <e-radio value="strong" style="margin-top: 12px">
+                    Strong
+                  </e-radio>
+                </e-radio-group>
+              </label>
               <div style="margin-top: 12px">
                 <label style="font-size: 12px">
                   Your name
-                  <e-input prepend-icon="ph-smiley" placeholder="Your name" :value.sync="name" />
+                  <e-input prepend-icon="ph-smiley" placeholder="Your name" :value="name" @valueChanged="e => name = e.detail" />
                 </label>
               </div>
               <e-collapse style="margin-top: 20px" header-title="Information about this website">
@@ -112,10 +145,26 @@
     <div class="col col-xs-12 col-lg-9">
       <div class="chat-wrapper">
         <div class="chats">
-          asd
+          <e-card
+            v-for="(message, i) in messages"
+            :key="i"
+            :class="`hydrated chat-${message.align}`"
+            :dark="isDark"
+            :backdrop-blur="strength"
+            :backdrop="silicon"
+          >
+            <div class="chat-message">
+              <div class="chat-message__text">
+                {{ message.text }}
+              </div>
+              <div class="chat-message__sender">
+                {{ message.sender }}
+              </div>
+            </div>
+          </e-card>
         </div>
         <div class="chat-box">
-          <e-chat-box />
+          <e-chat-box :dark="isDark" :backdrop-blur="strength" :backdrop="silicon" />
         </div>
       </div>
     </div>
@@ -131,6 +180,9 @@ export default {
     return {
       tabs: [{ key: 'friends', title: 'Friends' }, { key: 'blocked', title: 'Blocked' }, { key: 'settings', title: 'Settings' }],
       selectedTab: {},
+      silicon: true,
+      strength: 'medium',
+      mode: 'dark',
       name: 'Mihails Jeremejevs',
       friends: [
         { img: 'https://picsum.photos/100', name: 'Rolands Gobzems', lastMessage: 'Nunc a nisi eget justo sollicitudin scelerisque. Aliquam...' },
@@ -146,9 +198,26 @@ export default {
       ]
     }
   },
+  computed: {
+    isDark () {
+      return this.mode === 'dark'
+    },
+    messages () {
+      return [
+        { sender: 'Aldis Zatlers', text: 'Nunc a nisi eget justo sollicitudin scelerisque.', align: 'left' },
+        { sender: 'Marina Zuka', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elite.', align: 'left' },
+        { sender: this.name, text: 'Integer in metus eget lorem sodales facilisis vitae non.', align: 'right' },
+        { sender: this.name, text: 'Nulla vel porttitor turpis. Aenean consequat justo et dui.', align: 'right' },
+        { sender: 'Marina Zuka', text: 'Praesent fermentum posuere metus, vitae ultricies risus eu.', align: 'left' }
+      ]
+    }
+  },
   methods: {
     tabSelected (e) {
       this.selectedTab = e.detail
+    },
+    input (e) {
+      console.log(e)
     }
   }
 }
@@ -181,7 +250,28 @@ body {
   flex-direction: column;
 }
 .chats {
-  height: 100%
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+.chat-message {
+  padding: 12px;
+}
+.chat-message__text {
+  color: white
+}
+.chat-message__sender {
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+.chat-left {
+  margin-right: auto
+}
+.chat-right {
+  margin-left: auto;
 }
 .chat-box {
   padding: 12px;

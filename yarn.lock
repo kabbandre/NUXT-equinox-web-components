@@ -3384,10 +3384,10 @@ entities@^2.0.0:
   resolved "https://registry.yarnpkg.com/entities/-/entities-2.2.0.tgz#098dc90ebb83d8dffa089d55256b351d34c4da55"
   integrity sha512-p92if5Nz619I0w+akJrLZH0MX0Pb5DX39XOwQTtXSdQQOaYH03S1uIQp4mhOZtAXrxq4ViO67YTiLBo2638o9A==
 
-equinox-web-components@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/equinox-web-components/-/equinox-web-components-0.0.7.tgz#f517fc3b330c1921670587d1680a5a67d1bc7e42"
-  integrity sha512-qqsZ/IJN3ue7neBW+ZLEBHVpBbTZGw86tOSihB1oAU/jqUBF8BvXBqpB1O749hk+2ZpJN6InVYHSJgvZJ0EmLg==
+equinox-web-components@^0.0.15:
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/equinox-web-components/-/equinox-web-components-0.0.15.tgz#ad3100a0dfb2793a379fc29c491bd468a3dd6b04"
+  integrity sha512-R4HynX7tqu6VUNCxuseS8IuPyFU5Pn36iPUpL3te1ycPzfcobPDkGR5yL45w+FMAJTchKzGhH3m2vPtajYcHQA==
   dependencies:
     "@stencil/stylus" "^1.0.1"
 
